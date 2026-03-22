@@ -1,6 +1,6 @@
-import { Shield, Globe, FileUp, Activity, BookOpen, Server, AlertTriangle } from "lucide-react";
-import { mockDashboardStats, recentScans } from "@/lib/mock-data";
-import { ThreatScore } from "@/components/ThreatScore";
+import { useState } from "react";
+import { Shield, Globe, FileUp, Activity, BookOpen, Server, AlertTriangle, Trash2 } from "lucide-react";
+import { mockDashboardStats, recentScans as initialScans } from "@/lib/mock-data";
 import { cn } from "@/lib/utils";
 
 const stats = [
