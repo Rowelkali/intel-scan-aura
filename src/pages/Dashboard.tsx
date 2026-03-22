@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { Shield, Globe, FileUp, Activity, BookOpen, Server, AlertTriangle, Trash2 } from "lucide-react";
 import { mockDashboardStats, recentScans as initialScans } from "@/lib/mock-data";
+import { ThreatScore } from "@/components/ThreatScore";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 const stats = [
   { label: "Total Scans", value: mockDashboardStats.totalScans.toLocaleString(), icon: Shield, change: "+2,341 today" },
