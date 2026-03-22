@@ -66,7 +66,11 @@ export default function Dashboard() {
             )}
           </div>
           <div className="space-y-2">
-            {recentScans.map((scan) => (
+            {recentScans.length === 0 ? (
+              <div className="py-8 text-center text-sm text-muted-foreground">
+                No recent scans — start by scanning a URL or file.
+              </div>
+            ) : recentScans.map((scan) => (
               <div key={scan.id} className="flex items-center gap-4 py-3 px-3 rounded-md hover:bg-muted/30 transition-colors group">
                 <div className={cn("w-8 h-8 rounded flex items-center justify-center text-xs font-mono font-bold", 
                   scan.score > 80 ? "bg-threat-dangerous/10 text-threat-dangerous" :
