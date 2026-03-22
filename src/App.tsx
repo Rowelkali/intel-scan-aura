@@ -4,6 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Layout } from "@/components/Layout";
+import { ScanProvider } from "@/contexts/ScanContext";
 import Index from "./pages/Index";
 import UrlScan from "./pages/UrlScan";
 import FileScan from "./pages/FileScan";
@@ -20,20 +21,22 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <BrowserRouter>
-        <Layout>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/url-scan" element={<UrlScan />} />
-            <Route path="/file-scan" element={<FileScan />} />
-            <Route path="/sandbox" element={<SandboxResults />} />
-            <Route path="/sigma-rules" element={<SigmaRules />} />
-            <Route path="/vendors" element={<VendorResults />} />
-            <Route path="/api-docs" element={<ApiDocs />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </Layout>
-      </BrowserRouter>
+      <ScanProvider>
+        <BrowserRouter>
+          <Layout>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/url-scan" element={<UrlScan />} />
+              <Route path="/file-scan" element={<FileScan />} />
+              <Route path="/sandbox" element={<SandboxResults />} />
+              <Route path="/sigma-rules" element={<SigmaRules />} />
+              <Route path="/vendors" element={<VendorResults />} />
+              <Route path="/api-docs" element={<ApiDocs />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Layout>
+        </BrowserRouter>
+      </ScanProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );
