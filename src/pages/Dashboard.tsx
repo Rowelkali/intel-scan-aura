@@ -21,7 +21,7 @@ function getScoreColor(score: number) {
   return "text-threat-dangerous";
 }
 
-export default function Dashboard() {
+const [recentScans, setRecentScans] = useState(initialScans);
   return (
     <div className="p-6 space-y-8 max-w-7xl mx-auto">
       <div className="opacity-0 animate-fade-in-up">
