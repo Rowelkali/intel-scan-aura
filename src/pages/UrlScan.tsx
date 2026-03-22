@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { Globe, Search, ShieldCheck, ShieldAlert, ShieldX, ExternalLink, Clock } from "lucide-react";
+import { Globe, Search, ShieldCheck, ShieldAlert, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ThreatScore } from "@/components/ThreatScore";
-import { mockVendorResults } from "@/lib/mock-data";
+import { useScanContext } from "@/contexts/ScanContext";
 import { cn } from "@/lib/utils";
 
 interface ScanResult {
@@ -20,6 +20,7 @@ export default function UrlScan() {
   const [url, setUrl] = useState("");
   const [scanning, setScanning] = useState(false);
   const [result, setResult] = useState<ScanResult | null>(null);
+  const { triggerScanResults } = useScanContext();
 
   const handleScan = () => {
     if (!url.trim()) return;
@@ -39,6 +40,7 @@ export default function UrlScan() {
           ? ["Recently registered domain", "Known phishing infrastructure", "Suspicious TLD", "IP linked to botnet C2", "SSL certificate mismatch"]
           : ["Domain has long registration history", "Clean reputation across all feeds", "Valid SSL certificate"],
       });
+      triggerScanResults(url, isMalicious);
       setScanning(false);
     }, 2200);
   };

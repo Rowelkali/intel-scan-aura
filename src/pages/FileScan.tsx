@@ -3,6 +3,7 @@ import { FileUp, Upload, FileText, Hash, ShieldAlert, ShieldCheck } from "lucide
 import { Button } from "@/components/ui/button";
 import { ThreatScore } from "@/components/ThreatScore";
 import { mockVendorResults } from "@/lib/mock-data";
+import { useScanContext } from "@/contexts/ScanContext";
 import { cn } from "@/lib/utils";
 
 interface FileResult {
@@ -21,6 +22,7 @@ export default function FileScan() {
   const [result, setResult] = useState<FileResult | null>(null);
   const [dragOver, setDragOver] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const { triggerScanResults } = useScanContext();
 
   const processFile = (file: File) => {
     setScanning(true);
@@ -39,6 +41,7 @@ export default function FileScan() {
         detectionRatio: isSuspicious ? `${detected.length}/${mockVendorResults.length}` : `0/${mockVendorResults.length}`,
         vendors: isSuspicious ? mockVendorResults : mockVendorResults.map((v) => ({ ...v, detected: false, result: "Clean", category: "-" })),
       });
+      triggerScanResults(file.name, isSuspicious);
       setScanning(false);
     }, 3000);
   };

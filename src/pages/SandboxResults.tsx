@@ -1,6 +1,8 @@
-import { Activity, Database, Wifi, Code2, Syringe, AlertTriangle } from "lucide-react";
-import { mockSandboxResults } from "@/lib/mock-data";
+import { Activity, Database, Wifi, Code2, Syringe, AlertTriangle, Search, ShieldCheck } from "lucide-react";
+import { useScanContext } from "@/contexts/ScanContext";
 import { cn } from "@/lib/utils";
+import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 
 function Section({ icon: Icon, title, children }: { icon: any; title: string; children: React.ReactNode }) {
   return (
@@ -15,13 +17,36 @@ function Section({ icon: Icon, title, children }: { icon: any; title: string; ch
 }
 
 export default function SandboxResults() {
-  const data = mockSandboxResults;
+  const { scanData } = useScanContext();
+  const navigate = useNavigate();
+  const data = scanData.sandboxResults;
+
+  if (!data) {
+    return (
+      <div className="p-6 max-w-4xl mx-auto space-y-8">
+        <div className="opacity-0 animate-fade-in-up">
+          <h1 className="text-2xl font-bold tracking-tight">Sandbox Analysis</h1>
+          <p className="text-muted-foreground text-sm mt-1">Dynamic behavioral analysis from cloud sandbox detonation</p>
+        </div>
+        <div className="bg-card border border-border rounded-lg p-16 flex flex-col items-center gap-4 opacity-0 animate-fade-in-up stagger-1">
+          <Search className="h-10 w-10 text-muted-foreground/40" />
+          <p className="text-sm text-muted-foreground text-center">No sandbox results yet. Run a URL or file scan first.</p>
+          <div className="flex gap-3 mt-2">
+            <Button variant="outline" size="sm" onClick={() => navigate("/url-scan")}>Scan a URL</Button>
+            <Button variant="outline" size="sm" onClick={() => navigate("/file-scan")}>Scan a File</Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="p-6 max-w-4xl mx-auto space-y-8">
       <div className="opacity-0 animate-fade-in-up">
         <h1 className="text-2xl font-bold tracking-tight">Sandbox Analysis</h1>
-        <p className="text-muted-foreground text-sm mt-1">Dynamic behavioral analysis from cloud sandbox detonation</p>
+        <p className="text-muted-foreground text-sm mt-1">
+          Results for: <span className="font-mono text-foreground">{scanData.scannedTarget}</span>
+        </p>
       </div>
 
       <div className="bg-card border border-primary/20 rounded-lg p-4 flex items-center gap-3 opacity-0 animate-fade-in-up stagger-1">
