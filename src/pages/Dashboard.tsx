@@ -1,7 +1,9 @@
-import { Shield, Globe, FileUp, Activity, BookOpen, Server, AlertTriangle } from "lucide-react";
-import { mockDashboardStats, recentScans } from "@/lib/mock-data";
+import { useState } from "react";
+import { Shield, Globe, FileUp, Activity, BookOpen, Server, AlertTriangle, Trash2 } from "lucide-react";
+import { mockDashboardStats, recentScans as initialScans } from "@/lib/mock-data";
 import { ThreatScore } from "@/components/ThreatScore";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 const stats = [
   { label: "Total Scans", value: mockDashboardStats.totalScans.toLocaleString(), icon: Shield, change: "+2,341 today" },
@@ -20,6 +22,7 @@ function getScoreColor(score: number) {
 }
 
 export default function Dashboard() {
+  const [recentScans, setRecentScans] = useState(initialScans);
   return (
     <div className="p-6 space-y-8 max-w-7xl mx-auto">
       <div className="opacity-0 animate-fade-in-up">
@@ -48,9 +51,26 @@ export default function Dashboard() {
 
       <div className="grid lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 bg-card border border-border rounded-lg p-6 opacity-0 animate-fade-in-up stagger-2">
-          <h2 className="text-sm font-semibold mb-4 uppercase tracking-wider text-muted-foreground">Recent Scans</h2>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Recent Scans</h2>
+            {recentScans.length > 0 && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setRecentScans([])}
+                className="text-xs text-muted-foreground hover:text-destructive h-7 px-2 gap-1"
+              >
+                <Trash2 className="h-3 w-3" />
+                Clear
+              </Button>
+            )}
+          </div>
           <div className="space-y-2">
-            {recentScans.map((scan) => (
+            {recentScans.length === 0 ? (
+              <div className="py-8 text-center text-sm text-muted-foreground">
+                No recent scans — start by scanning a URL or file.
+              </div>
+            ) : recentScans.map((scan) => (
               <div key={scan.id} className="flex items-center gap-4 py-3 px-3 rounded-md hover:bg-muted/30 transition-colors group">
                 <div className={cn("w-8 h-8 rounded flex items-center justify-center text-xs font-mono font-bold", 
                   scan.score > 80 ? "bg-threat-dangerous/10 text-threat-dangerous" :
